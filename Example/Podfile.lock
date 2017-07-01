@@ -1,5 +1,5 @@
 PODS:
-  - AAPhotoCircleCrop (1.1.0)
+  - AAPhotoCircleCrop (1.2.0)
 
 DEPENDENCIES:
   - AAPhotoCircleCrop (from `../`)
@@ -9,8 +9,8 @@ EXTERNAL SOURCES:
     :path: ../
 
 SPEC CHECKSUMS:
-  AAPhotoCircleCrop: 6d78fa9c02aea40b30a1b208539724f0d49cb608
+  AAPhotoCircleCrop: a5fe85766545d8be8b6761b639f356859ce1f7f9
 
 PODFILE CHECKSUM: dc6c6d16a9e59ae2527700c2ec3e14f6e021c2db
 
-COCOAPODS: 1.2.1
+COCOAPODS: 1.1.1

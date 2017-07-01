@@ -9,9 +9,8 @@
 import UIKit
 
 class AACircleCropCutterView: UIView {
-    
-    /// Diameter of the circle
-    var circleDiameter: CGFloat = 240 {
+
+    var imageSize: CGSize = CGSize(width: 240, height: 240) {
         didSet {
             setNeedsDisplay()
         }
@@ -33,25 +32,15 @@ class AACircleCropCutterView: UIView {
         
         UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.7).setFill()
         UIRectFill(rect)
-        
-        // Draw the circle
-        let circle = UIBezierPath(ovalIn: CGRect(x: rect.size.width/2 - circleDiameter/2,
-                                                 y: rect.size.height/2 - circleDiameter/2,
-                                                 width: circleDiameter,
-                                                 height: circleDiameter))
+
+        // Draw a rectangle around the circle, just to see the effective cutted image
+        let square = UIBezierPath(rect: CGRect(x: rect.size.width/2 - imageSize.width/2, y: rect.size.height/2 - imageSize.height/2, width: imageSize.width, height: imageSize.height))
         context?.setBlendMode(.clear)
         UIColor.clear.setFill()
-        circle.fill()
-        
-        // Draw a rectangle around the circle, just to see the effective cutted image
-//        let square = UIBezierPath(rect: CGRect(x: rect.size.width/2 - circleDiameter/2, y: rect.size.height/2 - circleDiameter/2, width: circleDiameter, height: circleDiameter))
-//        UIColor.lightGray.setStroke()
-//        square.lineWidth = 1.0
-//        context?.setBlendMode(.normal)
-//        square.stroke()
-        
+        square.fill()
+
     }
-    
+
     // Allow touches through the circle crop cutter view
     override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
         for subview in subviews as [UIView] {

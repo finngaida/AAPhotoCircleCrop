@@ -20,18 +20,16 @@ class ViewController: UIViewController, AACircleCropViewControllerDelegate {
         imageView.layer.borderColor = UIColor.black.cgColor
         imageView.clipsToBounds = false
         imageView.layer.cornerRadius = imageView.frame.width/2
+        imageView.contentMode = .scaleAspectFit
     }
     
     //- - -
     // MARK: - Actions
     //- - -
     @IBAction func cropAction(_ sender: UIButton) {
-        let circleCropController = AACircleCropViewController()
+        let circleCropController = AACircleCropViewController(imageSize: CGSize(width: 300, height: 150))
         circleCropController.image = UIImage(named: "my_photo.jpg")!
         circleCropController.delegate = self
-        
-        // Set the imageSize you want to get
-        circleCropController.imageSize = CGSize(width: 200, height: 200)
         
         // 🌎 use selectTitle and cancelTitle to localize buttons
         circleCropController.selectTitle = "Scegli" // 🇮🇹

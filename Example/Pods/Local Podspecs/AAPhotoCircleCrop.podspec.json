@@ -1,6 +1,6 @@
 {
   "name": "AAPhotoCircleCrop",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "summary": "A simple circular image cropper written in Swift",
   "description": "This is a simple circular image cropper written in Swift which can be used after the user image selection. The user can select the circle they want to user as profile picture.",
   "homepage": "https://github.com/andreaantonioni/AAPhotoCircleCrop",
@@ -13,7 +13,7 @@
   },
   "source": {
     "git": "https://github.com/andreaantonioni/AAPhotoCircleCrop.git",
-    "tag": "1.1.0"
+    "tag": "1.2.0"
   },
   "social_media_url": "https://twitter.com/andrea_anto97",
   "platforms": {

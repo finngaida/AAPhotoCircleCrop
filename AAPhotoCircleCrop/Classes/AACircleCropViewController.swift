@@ -23,7 +23,7 @@ open class AACircleCropViewController: UIViewController, UIScrollViewDelegate {
     open var image: UIImage!
     /// Set the size to get the cropped image resized. The
     /// default size is the circleDiameter
-    open var imageSize: CGSize?
+    open var imageSize: CGSize
     /// Titles of the buttons. You can use them for localization
     open var selectTitle: String = "Select"
     open var cancelTitle: String = "Cancel"
@@ -38,12 +38,16 @@ open class AACircleCropViewController: UIViewController, UIScrollViewDelegate {
     fileprivate var imageView: UIImageView!
     fileprivate var scrollView: AACircleCropScrollView!
     fileprivate var cutterView: AACircleCropCutterView!
-    private var circleDiameter: CGFloat {
-        // Offeset for leading and trailing
-        let circleOffset: CGFloat = 40
-        return UIScreen.main.bounds.width - circleOffset * 2
+
+    public init(imageSize: CGSize) {
+        self.imageSize = imageSize
+        super.init(nibName: nil, bundle: nil)
     }
     
+    required public init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     //- - -
     // MARK: - View Management
     //- - -
@@ -58,7 +62,7 @@ open class AACircleCropViewController: UIViewController, UIScrollViewDelegate {
         imageView.frame = CGRect(origin: CGPoint.zero, size: image.size)
         
         // Setup scrollView
-        scrollView = AACircleCropScrollView(frame: CGRect(x: 0, y: 0, width: circleDiameter, height: circleDiameter))
+        scrollView = AACircleCropScrollView(frame: CGRect(origin: CGPoint.zero, size: imageSize))
         scrollView.backgroundColor = UIColor.black
         scrollView.delegate = self
         scrollView.addSubview(imageView)
@@ -97,9 +101,10 @@ open class AACircleCropViewController: UIViewController, UIScrollViewDelegate {
     //- - -
     
     fileprivate func setupCutterView() {
-        cutterView = AACircleCropCutterView()
-        cutterView.circleDiameter = circleDiameter
-        
+        cutterView = AACircleCropCutterView(frame: CGRect(origin: CGPoint.zero, size: imageSize))
+        cutterView.center = self.view.center
+        cutterView.imageSize = imageSize
+
         view.addSubview(cutterView)
         
         cutterView.translatesAutoresizingMaskIntoConstraints = false
@@ -151,11 +156,10 @@ open class AACircleCropViewController: UIViewController, UIScrollViewDelegate {
     func selectAction() {
         
         let newSize = CGSize(width: image.size.width * scrollView.zoomScale, height: image.size.height * scrollView.zoomScale)
-        
         let offset = scrollView.contentOffset
         
-        UIGraphicsBeginImageContextWithOptions(CGSize(width: circleDiameter, height: circleDiameter), false, 0)
-        let circlePath = UIBezierPath(ovalIn: CGRect(x: 0, y: 0, width: circleDiameter, height: circleDiameter))
+        UIGraphicsBeginImageContextWithOptions(CGSize(width: imageSize.width, height: imageSize.height), false, 0)
+        let circlePath = UIBezierPath(ovalIn: CGRect(x: 0, y: 0, width: imageSize.width, height: imageSize.height))
         circlePath.addClip()
         var sharpRect = CGRect(x: -offset.x, y: -offset.y, width: newSize.width, height: newSize.height)
         sharpRect = sharpRect.integral
@@ -164,10 +168,8 @@ open class AACircleCropViewController: UIViewController, UIScrollViewDelegate {
         let finalImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         if let imageData = UIImagePNGRepresentation(finalImage!), var pngImage = UIImage(data: imageData) {
-            
-            if let imageSize = imageSize {
-                pngImage = pngImage.resizeImage(newWidth: imageSize.width)
-            }
+
+            pngImage = pngImage.resizeImage(newWidth: imageSize.width)
             delegate?.circleCropDidCropImage(pngImage)
             
         } else {
