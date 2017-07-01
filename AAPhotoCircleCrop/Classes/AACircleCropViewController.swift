@@ -159,16 +159,11 @@ open class AACircleCropViewController: UIViewController, UIScrollViewDelegate {
         let offset = scrollView.contentOffset
         
         UIGraphicsBeginImageContextWithOptions(CGSize(width: imageSize.width, height: imageSize.height), false, 0)
-        let circlePath = UIBezierPath(ovalIn: CGRect(x: 0, y: 0, width: imageSize.width, height: imageSize.height))
-        circlePath.addClip()
-        var sharpRect = CGRect(x: -offset.x, y: -offset.y, width: newSize.width, height: newSize.height)
-        sharpRect = sharpRect.integral
-        
-        image.draw(in: sharpRect)
+        let sharpRect = CGRect(x: -offset.x, y: -offset.y, width: newSize.width, height: newSize.height)
+        image.draw(in: sharpRect.integral)
         let finalImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         if let imageData = UIImagePNGRepresentation(finalImage!), var pngImage = UIImage(data: imageData) {
-
             pngImage = pngImage.resizeImage(newWidth: imageSize.width)
             delegate?.circleCropDidCropImage(pngImage)
             
