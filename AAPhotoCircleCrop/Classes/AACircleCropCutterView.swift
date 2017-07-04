@@ -33,11 +33,22 @@ class AACircleCropCutterView: UIView {
         UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.7).setFill()
         UIRectFill(rect)
 
-        // Draw a rectangle around the circle, just to see the effective cutted image
-        let square = UIBezierPath(rect: CGRect(x: rect.size.width/2 - imageSize.width/2, y: rect.size.height/2 - imageSize.height/2, width: imageSize.width, height: imageSize.height))
+        let padding: CGFloat = 25
+        let scaledSize: CGSize
+
+        if imageSize.width > rect.width - padding*2 {
+            let factor = (rect.width - padding*2) / imageSize.width
+            scaledSize = CGSize(width: imageSize.width * factor, height: imageSize.height * factor)
+        } else {
+            scaledSize = imageSize
+        }
+
+
+        let newRect = CGRect(x: rect.size.width/2 - scaledSize.width/2, y: rect.size.height/2 - scaledSize.height/2, width: scaledSize.width, height: scaledSize.height)
+        let path = UIBezierPath(rect: newRect)
         context?.setBlendMode(.clear)
         UIColor.clear.setFill()
-        square.fill()
+        path.fill()
 
     }
 
